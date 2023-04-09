@@ -7,13 +7,13 @@ use Yii;
 /**
  * This is the model class for table "category".
  *
- * @property int $id
- * @property string|null $title
+ * @property integer $id
+ * @property string $title
  */
 class Category extends \yii\db\ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -21,7 +21,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
@@ -31,7 +31,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -43,6 +43,16 @@ class Category extends \yii\db\ActiveRecord
 
     public function getArticles()
     {
-        return$this->hasMany(Article::className(), ['category_id' => 'id']);
+        return $this->hasMany(Article::className(), ['category_id' => 'id']);
+    }
+
+    public function getArticlesCount()
+    {
+        return $this->getArticles()->count();
+    }
+
+    public static function getAll()
+    {
+        return Category::find()->all();
     }
 }

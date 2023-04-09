@@ -3,11 +3,11 @@
 namespace app\controllers;
 
 use app\models\Article;
+use app\models\Category;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -15,13 +15,13 @@ use app\models\ContactForm;
 class SiteController extends Controller
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function behaviors()
     {
         return [
             'access' => [
-                'class' => AccessControl::class,
+                'class' => AccessControl::className(),
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -32,7 +32,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -40,18 +40,8 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionView()
-    {
-        return $this->render('single');
-    }
-
-    public function actionCategory()
-    {
-        return $this->render('category');
-    }
-
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function actions()
     {
@@ -73,29 +63,34 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // build a DB query to get all articles
-        $query = Article::find();
-
-        // get the total number of articles (but do not fetch the article data yet)
-        $count = $query->count();
-
-        // create a pagination object with the total count
-        $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>1]);
-
-        // limit the query using the pagination and retrieve the articles
-        $articles = $query->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $data = Article::getAll(1);
+        $popular = Article::getPopular();
+        $recent = Article::getRecent();
+        $categories = Category::getAll();
 
         return $this->render('index',[
-            'articles'=>$articles,
-            'pagination'=>$pagination
-        ]);    }
+            'articles'=>$data['articles'],
+            'pagination'=>$data['pagination'],
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories
+        ]);
+    }
+
+    public function actionView()
+    {
+        return $this->render('single');
+    }
+
+    public function actionCategory()
+    {
+        return $this->render('category');
+    }
 
     /**
      * Login action.
      *
-     * @return Response|string
+     * @return string
      */
     public function actionLogin()
     {
@@ -107,8 +102,6 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -117,7 +110,7 @@ class SiteController extends Controller
     /**
      * Logout action.
      *
-     * @return Response
+     * @return string
      */
     public function actionLogout()
     {
@@ -129,7 +122,7 @@ class SiteController extends Controller
     /**
      * Displays contact page.
      *
-     * @return Response|string
+     * @return string
      */
     public function actionContact()
     {
