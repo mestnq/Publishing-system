@@ -4,6 +4,8 @@ namespace app\models;
 
 use Faker\Provider\Image;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "article".
@@ -95,6 +97,40 @@ class Article extends \yii\db\ActiveRecord
         {
             $this->link('category', $category);
             return true;
+        }
+    }
+
+    public function getTags()
+    {
+        try {
+            return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+                ->viaTable('article_tag', ['article_id' => 'id']);
+        } catch (InvalidConfigException $e) {
+        }
+    }
+
+    public function clearCurrentTags()
+    {
+        ArticleTag::deleteAll(['article_id'=>$this->id]);
+    }
+
+    public function getSelectedTags()
+    {
+        $selectedIds = $this->getTags()->select('id')->asArray()->all();
+        return ArrayHelper::getColumn($selectedIds, 'id');
+    }
+
+    public function saveTags($tags)
+    {
+        if (is_array($tags))
+        {
+            $this->clearCurrentTags();
+
+            foreach($tags as $tag_id)
+            {
+                $tag = Tag::findOne($tag_id);
+                $this->link('tags', $tag);
+            }
         }
     }
 
