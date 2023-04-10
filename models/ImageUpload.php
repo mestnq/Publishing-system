@@ -6,27 +6,28 @@ use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
-class ImageUpload extends Model
-{
+class ImageUpload extends Model{
+    
     public $image;
 
     public function rules()
     {
         return [
             [['image'], 'required'],
-            [['image'], 'file', 'extensions' => 'jpg,png,jpeg']
+            [['image'], 'file', 'extensions' => 'jpg,png']
         ];
     }
+
 
     public function uploadFile(UploadedFile $file, $currentImage)
     {
         $this->image = $file;
 
-        if($this->validate())
-        {
-            $this->deleteCurrentImage($currentImage);
-            return $this->saveImage();
-        }
+       if($this->validate())
+       {
+           $this->deleteCurrentImage($currentImage);
+           return $this->saveImage();
+       }
 
     }
 

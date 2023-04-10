@@ -101,7 +101,7 @@ class Article extends \yii\db\ActiveRecord
         if($category != null)
         {
             $this->link('category', $category);
-            return true;
+            return true;            
         }
     }
 
@@ -110,10 +110,10 @@ class Article extends \yii\db\ActiveRecord
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
             ->viaTable('article_tag', ['article_id' => 'id']);
     }
-
+    
     public function getSelectedTags()
     {
-        $selectedIds = $this->getTags()->select('id')->asArray()->all();
+         $selectedIds = $this->getTags()->select('id')->asArray()->all();
         return ArrayHelper::getColumn($selectedIds, 'id');
     }
 
@@ -135,12 +135,12 @@ class Article extends \yii\db\ActiveRecord
     {
         ArticleTag::deleteAll(['article_id'=>$this->id]);
     }
-
+    
     public function getDate()
     {
         return Yii::$app->formatter->asDate($this->date);
     }
-
+    
     public static function getAll($pageSize = 5)
     {
         // build a DB query to get all articles
@@ -156,18 +156,18 @@ class Article extends \yii\db\ActiveRecord
         $articles = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
-
+        
         $data['articles'] = $articles;
         $data['pagination'] = $pagination;
-
+        
         return $data;
     }
-
+    
     public static function getPopular()
     {
         return Article::find()->orderBy('viewed desc')->limit(3)->all();
     }
-
+    
     public static function getRecent()
     {
         return Article::find()->orderBy('date asc')->limit(4)->all();

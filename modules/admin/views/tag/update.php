@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Tag $model */
+/* @var $this yii\web\View */
+/* @var $model app\models\Tag */
 
 $this->title = 'Update Tag: ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Tags', 'url' => ['index']];

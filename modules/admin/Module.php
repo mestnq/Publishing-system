@@ -8,13 +8,14 @@ namespace app\modules\admin;
 class Module extends \yii\base\Module
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $layout = '/admin';
+    
     public $controllerNamespace = 'app\modules\admin\controllers';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function init()
     {

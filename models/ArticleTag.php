@@ -7,17 +7,17 @@ use Yii;
 /**
  * This is the model class for table "article_tag".
  *
- * @property int $id
- * @property int|null $article_id
- * @property int|null $tag_id
+ * @property integer $id
+ * @property integer $article_id
+ * @property integer $tag_id
  *
- * @property Article $article
  * @property Tag $tag
+ * @property Article $article
  */
 class ArticleTag extends \yii\db\ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -25,19 +25,19 @@ class ArticleTag extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
         return [
             [['article_id', 'tag_id'], 'integer'],
-            [['article_id'], 'exist', 'skipOnError' => true, 'targetClass' => Article::class, 'targetAttribute' => ['article_id' => 'id']],
-            [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tag::class, 'targetAttribute' => ['tag_id' => 'id']],
+            [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tag::className(), 'targetAttribute' => ['tag_id' => 'id']],
+            [['article_id'], 'exist', 'skipOnError' => true, 'targetClass' => Article::className(), 'targetAttribute' => ['article_id' => 'id']],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -49,22 +49,18 @@ class ArticleTag extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Article]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getArticle()
-    {
-        return $this->hasOne(Article::class, ['id' => 'article_id']);
-    }
-
-    /**
-     * Gets query for [[Tag]].
-     *
      * @return \yii\db\ActiveQuery
      */
     public function getTag()
     {
-        return $this->hasOne(Tag::class, ['id' => 'tag_id']);
+        return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArticle()
+    {
+        return $this->hasOne(Article::className(), ['id' => 'article_id']);
     }
 }

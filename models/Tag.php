@@ -7,15 +7,15 @@ use Yii;
 /**
  * This is the model class for table "tag".
  *
- * @property int $id
- * @property string|null $title
+ * @property integer $id
+ * @property string $title
  *
  * @property ArticleTag[] $articleTags
  */
 class Tag extends \yii\db\ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -23,7 +23,7 @@ class Tag extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
@@ -33,7 +33,7 @@ class Tag extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -44,10 +44,9 @@ class Tag extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[ArticleTags]].
-     *
      * @return \yii\db\ActiveQuery
      */
+    
     public function getArticles()
     {
         return $this->hasMany(Article::className(), ['id' => 'article_id'])

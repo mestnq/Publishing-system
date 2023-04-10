@@ -3,13 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/** @var yii\web\View $this */
-/** @var app\models\Tag $model */
+/* @var $this yii\web\View */
+/* @var $model app\models\Tag */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Tags', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="tag-view">
 
